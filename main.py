@@ -14,3 +14,19 @@ CREATE TABLE IF NOT EXISTS livros (
     )              
 """)
 print("Tabela criada com sucesso!")
+
+#Etapa 2
+
+def inserir_dados(titulo, autor, ano):
+    conexao = sqlite3.connect("biblioteca.db")
+    cursor = conexao.cursor()
+
+    cursor.execute(""""
+    INSERT INTO livros (titulo, autor, ano)
+    VALUES (?, ?, ?)
+    """, (titulo, autor, ano))
+
+    conexao.commit()
+    conexao.close()
+
+    print(f"Dados inseridos na tabela com sucesso!\nTITULO: {titulo}\nAUTOR: {autor}\nANO: {ano}")
