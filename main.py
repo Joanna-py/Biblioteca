@@ -10,23 +10,38 @@ CREATE TABLE IF NOT EXISTS livros (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo TEXT NOT NULL,
     autor TEXT NOT NULL,
-    ano INTEGER
+    ano INTEGER,
+    disponivel TEXT
     )              
 """)
 print("Tabela criada com sucesso!")
 
 #Etapa 2
 
-def inserir_dados(titulo, autor, ano):
-    conexao = sqlite3.connect("biblioteca.db")
-    cursor = conexao.cursor()
+def cadastrar_livro(titulo, autor, ano):
+    try:
+        conexao = sqlite3.connect("biblioteca.db")
+        cursor = conexao.cursor()
 
-    cursor.execute(""""
-    INSERT INTO livros (titulo, autor, ano)
-    VALUES (?, ?, ?)
-    """, (titulo, autor, ano))
+        
+        cursor.execute("""
+        INSERT INTO livros (titulo, autor, ano, disponivel)
+        VALUES (?, ?, ?, ?)                              
+        """, 
+        (titulo, autor, ano, "Sim")
+        )
+        
+        conexao.commit()
+        print(f"Livro '{titulo}' cadastrado com sucesso!")
 
-    conexao.commit()
-    conexao.close()
+    except sqlite3.Error as erro:
+        print(f"Erro ao cadastrar livro: {erro}")
+    finally:   
+        conexao.close()
 
-    print(f"Dados inseridos na tabela com sucesso!\nTITULO: {titulo}\nAUTOR: {autor}\nANO: {ano}")
+
+titulo = input("Digite o titulo: ")
+autor = input(f"Quem é o autor do livro? -| {titulo}: ")
+ano = int(input(f"De que ano é o livro? -| {titulo}: "))
+
+cadastrar_livro(titulo, autor, ano)
