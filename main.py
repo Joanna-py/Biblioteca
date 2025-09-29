@@ -65,3 +65,31 @@ def listar_livros():
         conexao.close()
 
 listar_livros()
+
+
+#Etapa 5
+
+
+def remover_livro(id_livro):
+    try:
+        conexao = sqlite3.connect("biblioteca.db")
+        cursor = conexao.cursor()
+
+        cursor.execute("DELETE FROM livros WHERE id = ?", (id_livro,))
+
+        conexao.commit()
+
+        if cursor.rowcount > 0:
+            print("livro removido com sucesso!")
+        else:
+            print("Nenhum livro encontrado com o ID fornecido!")
+
+    except Exception as erro:
+         print(f"Erro ao tentar excluir livro: {erro}")
+
+    finally:
+        if conexao:
+            conexao.close()
+
+remover = input("Digite o id do livro que deseja deletar: ")
+remover_livro(remover)
