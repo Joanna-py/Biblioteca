@@ -67,6 +67,40 @@ def listar_livros():
 listar_livros()
 
 
+#Etapa 4
+
+def atualizar_disponibilidade(id_livro):
+    try:
+        conexao = sqlite3.connect("biblioteca.db")
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT disponivel FROM livros WHERE id = ?", (id_livro,))
+        resultado = cursor.fetchone()
+
+        if not resultado:
+            print("Livro não encontrado!")
+            return
+        
+        status_atual = resultado[0]
+        novo_status = "Não" if status_atual == "Sim" else "Sim"
+
+        cursor.execute("UPDATE livros SET disponivel = ? WHERE id = ?", (novo_status, id_livro))
+
+        conexao.commit()
+        print(f"Status do livro ID {id_livro} alterado: {status_atual} → {novo_status}")
+
+        titulo = input("Digite o titulo do livro: ")
+        autor = input("Quem é o autor deste livro?: ")
+        ano = input("De que ano é esse livro?: ")
+
+        cadastrar_livro(titulo, autor, ano)
+
+    finally:
+        conexao.close()
+listar_livros()
+
+        
+
 #Etapa 5
 
 
