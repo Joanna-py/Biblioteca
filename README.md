@@ -27,13 +27,6 @@ Este é um projeto simples de gerenciamento de livros utilizando **Python** e **
    ```bash
    git clone https://github.com/seu-usuario/nome-do-repositorio.git
    cd nome-do-repositorio
+2. Execute o script no terminal:
 
    python biblioteca.py
-
-   🗃️ Estrutura da Tabela livros
-Campo	Tipo	Descrição
-id	INTEGER	Identificador único (PRIMARY KEY)
-titulo	TEXT	Título do livro
-autor	TEXT	Nome do autor
-ano	INTEGER	Ano de publicação
-disponivel	TEXT	Disponibilidade: "Sim" ou "Não"
