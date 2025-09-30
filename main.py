@@ -14,9 +14,6 @@ CREATE TABLE IF NOT EXISTS livros (
     disponivel TEXT
     )              
 """)
-print("Tabela criada com sucesso!")
-
-#Etapa 2
 
 def cadastrar_livro(titulo, autor, ano):
     try:
@@ -40,15 +37,6 @@ def cadastrar_livro(titulo, autor, ano):
         conexao.close()
 
 
-titulo = input("Digite o titulo: ")
-autor = input(f"Quem é o autor do livro? -| {titulo}: ")
-ano = int(input(f"De que ano é o livro? -| {titulo}: "))
-
-cadastrar_livro(titulo, autor, ano)
-
-
-#Etapa 3
-
 def listar_livros():
     try:
         conexao = sqlite3.connect("biblioteca.db")
@@ -62,68 +50,92 @@ def listar_livros():
     except sqlite3.Error as erro:
         print(f"Erro ao listar livros: {erro}")
     finally:
-        conexao.close()
+        conexao.close()   
 
-listar_livros()
-
-
-#Etapa 4
 
 def atualizar_disponibilidade(id_livro):
-    try:
-        conexao = sqlite3.connect("biblioteca.db")
-        cursor = conexao.cursor()
+            try:
+                conexao = sqlite3.connect("biblioteca.db")
+                cursor = conexao.cursor()
 
-        cursor.execute("SELECT disponivel FROM livros WHERE id = ?", (id_livro,))
-        resultado = cursor.fetchone()
+                cursor.execute("SELECT disponivel FROM livros WHERE id = ?", (id_livro,))
+                resultado = cursor.fetchone()
 
-        if not resultado:
-            print("Livro não encontrado!")
-            return
-        
-        status_atual = resultado[0]
-        novo_status = "Não" if status_atual == "Sim" else "Sim"
+                if not resultado:
+                    print("Livro não encontrado!")
+                    return
+                
+                status_atual = resultado[0]
+                novo_status = "Não" if status_atual == "Sim" else "Sim"
 
-        cursor.execute("UPDATE livros SET disponivel = ? WHERE id = ?", (novo_status, id_livro))
+                cursor.execute("UPDATE livros SET disponivel = ? WHERE id = ?", (novo_status, id_livro))
 
-        conexao.commit()
-        print(f"Status do livro ID {id_livro} alterado: {status_atual} → {novo_status}")
+                conexao.commit()
+                print(f"Status do livro ID {id_livro} alterado: {status_atual} → {novo_status}")
 
-        titulo = input("Digite o titulo do livro: ")
-        autor = input("Quem é o autor deste livro?: ")
-        ano = input("De que ano é esse livro?: ")
 
-        cadastrar_livro(titulo, autor, ano)
-
-    finally:
-        conexao.close()
-listar_livros()
-
-        
-
-#Etapa 5
-
+            finally:
+                conexao.close()
 
 def remover_livro(id_livro):
-    try:
-        conexao = sqlite3.connect("biblioteca.db")
-        cursor = conexao.cursor()
+            try:
+                conexao = sqlite3.connect("biblioteca.db")
+                cursor = conexao.cursor()
 
-        cursor.execute("DELETE FROM livros WHERE id = ?", (id_livro,))
+                cursor.execute("DELETE FROM livros WHERE id = ?", (id_livro,))
 
-        conexao.commit()
+                conexao.commit()
 
-        if cursor.rowcount > 0:
-            print("livro removido com sucesso!")
-        else:
-            print("Nenhum livro encontrado com o ID fornecido!")
+                if cursor.rowcount > 0:
+                    print("livro removido com sucesso!")
+                else:
+                    print("Nenhum livro encontrado com o ID fornecido!")
 
-    except Exception as erro:
-         print(f"Erro ao tentar excluir livro: {erro}")
+            except Exception as erro:
+                print(f"Erro ao tentar excluir livro: {erro}")
 
-    finally:
-        if conexao:
-            conexao.close()
+            finally:
+                if conexao:
+                    conexao.close()
 
-remover = input("Digite o id do livro que deseja deletar: ")
-remover_livro(remover)
+            remover = input("Digite o id do livro que deseja deletar: ")
+
+#Etapa 6
+
+while True:
+    print("Bem vindo a nossa biblioteca!✨")
+    print("="*50)
+    print("1. Cadastrar livro\n2. Listar livros\n3. Atualizar disponibilidade\n4. Remover livro\n5. Sair")
+    print("="*50)
+
+    menu = input("Escolha uma das opçoes acima: ")
+    
+    #Etapa 2
+
+    if menu == 1:
+        titulo = input("Digite o titulo: ")
+        autor = input(f"Quem é o autor do livro? -| {titulo}: ")
+        ano = int(input(f"De que ano é o livro? -| {titulo}: "))
+        cadastrar_livro(titulo, autor, ano)
+
+
+    #Etapa 3
+
+    elif menu == 2:
+        listar_livros()
+
+
+    #Etapa 4
+
+    elif menu == 3:
+       
+        atualizar_disponibilidade(1)
+
+        
+    #Etapa 5
+
+    elif menu == 4:
+    
+        remover_livro(remover)
+        
+
